@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "958081432958",
+    "project_id": "tasklearn",
+    "storage_bucket": "tasklearn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958081432958:android:b320d5100c9930b893c72f",
+        "android_client_info": {
+          "package_name": "com.example.task_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "958081432958-gernpcoocijunbhrseaffalea3663477.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.task_flutter",
+            "certificate_hash": "4c9d6f43a30df43cf12dbfb3675c2d95510c61bb"
+          }
+        },
+        {
+          "client_id": "958081432958-r5l4dot80045ld6j7klk09h7q5ba5uu4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuFbQi6IvHkJtQu4ofk5JqjavhR4g3TJE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "958081432958-r5l4dot80045ld6j7klk09h7q5ba5uu4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
