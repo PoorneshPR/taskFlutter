@@ -1,0 +1,2 @@
+# taskFlutter
+trainig from base
