@@ -23,7 +23,7 @@ class _UserLoginCheckScreenState extends State<UserLoginCheckScreen> {
         Navigator.pushNamed(context, routeFromMessage);
       }
     });
-    PushNotificationService().initilializeNotification(context);
+    PushNotificationService().initializeNotification(context);
     Future.microtask(() async =>
         await context.read<LoginProvider>().userNavigationStatus(context));
   }

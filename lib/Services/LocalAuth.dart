@@ -7,7 +7,7 @@ class LocalAuth {
   static final localAuthenticate = LocalAuthentication();
 
   // list of finger print added in local device settings
-  static Future<bool> authenticate(BuildContext context) async {
+  static Future<void> authenticate(BuildContext context) async {
     bool isAuth;
     try {
       isAuth = await localAuthenticate.authenticate(
@@ -16,28 +16,25 @@ class LocalAuth {
           useErrorDialogs: true,
           stickyAuth: true);
       if (isAuth == true) {
-        Navigator.pushReplacement(
+        //TODO
+        //Use named routes
+        Navigator.pushNamed(
             context,
-            MaterialPageRoute(
-              builder: (context) =>   const HomeScreen(),
-            ));
-
+           'home');
       }
-      return isAuth;
+
     } on PlatformException catch (e) {
-      return false;
+     debugPrint(e.message.toString());
     }
   }
 
-  static Future<bool> canCheckBiometrics(BuildContext context) async {
+  static Future<bool> canCheckBiometrics() async {
     bool hasBiometric;
     try {
       hasBiometric = await localAuthenticate.canCheckBiometrics;
-      if (hasBiometric) {
-        await authenticate(context);
-      }
       return hasBiometric;
     } on PlatformException catch (e) {
+      debugPrint(e.message.toString());
       return false;
     }
   }

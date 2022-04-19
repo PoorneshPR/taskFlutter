@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_flutter/Screens/HomeScreen.dart';
 import 'package:task_flutter/screens/NotifyScreen.dart';
 import 'package:task_flutter/Screens/UserLoginCheck.dart';
 import 'package:task_flutter/Services/Provider/AuthenticationProvider.dart';
@@ -41,11 +42,12 @@ class MyApp extends StatelessWidget {
       home: AnimatedSplashScreen(
           duration: 3000,
           splash: Image.asset("assets/dart_icon.png", fit: BoxFit.fitHeight),
-          nextScreen: const UserLoginCheckScreen(),
+          nextScreen: const HomeScreen(),
           splashTransition: SplashTransition.fadeTransition,
           backgroundColor: Colors.white),
       //    home:HomeScreen()
-      routes: {"red": (_) => const NotifyScreen()},
+      routes: {"red": (_) => const NotifyScreen(),
+   "home": (_) => const HomeScreen(),},
     );
   }
 }

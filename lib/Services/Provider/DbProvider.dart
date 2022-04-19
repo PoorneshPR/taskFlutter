@@ -9,6 +9,7 @@ class DbProvider with ChangeNotifier {
 
   ContactsList? _lists;
   List<ContactsModel>? contactUser;
+  List<ContactsModel>? initialData;
 
   ContactsList? get lists => _lists;
 
@@ -21,8 +22,9 @@ class DbProvider with ChangeNotifier {
     return await ContactsService().getApiData();
   }
 
-  Future<void> loadContacts({String? query}) async {
-    contactUser = await DbConnection.instance.getContacts(query: query);
+  Future<void> loadContacts() async {
+    contactUser = await _db.getContacts();
+    initialData = await _db.getContacts();
     debugPrint('length ${contactUser?.length}');
     if (contactUser == null || contactUser!.isEmpty) {
       String? jsonString = await _loadApiData();
@@ -32,7 +34,20 @@ class DbProvider with ChangeNotifier {
         await _db.insertIntoContacts(element);
       });
       contactUser = await _db.getContacts();
+
     }
+    print(contactUser?.toList());
     notifyListeners();
   }
+  Future<void>filterdata(String query)async {
+    if(query.isNotEmpty){
+      contactUser = contactUser?.where((element) => element.username.toLowerCase().contains(query.toLowerCase())).toList();
+      notifyListeners();
+    }else{
+      contactUser =initialData;
+      notifyListeners();
+    }
+  }
+
+
 }

@@ -9,16 +9,16 @@ class BiometricScreen extends StatefulWidget {
 }
 
 class _BiometricScreenState extends State<BiometricScreen> {
-  checkAuthGo() async {
-    if (LocalAuth.canCheckBiometrics(context) == true) {
-      LocalAuth.canCheckBiometrics(context);
+  checkAuthGo(BuildContext context) async {
+    if (await LocalAuth.canCheckBiometrics() == true) {
+     await LocalAuth.authenticate(context);
     }
   }
 
   @override
   void initState() {
-    checkAuthGo();
-    // TODO: implement initState
+    checkAuthGo(context);
+
     super.initState();
   }
 

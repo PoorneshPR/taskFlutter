@@ -24,14 +24,12 @@ class UtilityProvider with ChangeNotifier {
   addBoolToSF(bool value) async {
     SharedPreferences pref;
     pref = await SharedPreferences.getInstance();
-
     await pref.setBool("boolFinger", value);
     notifyListeners();
   }
 
   getBoolToSF() async {
     pref = await SharedPreferences.getInstance();
-
     return await pref?.getBool("boolFinger");
   }
 
@@ -51,13 +49,13 @@ class UtilityProvider with ChangeNotifier {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => BiometricScreen(),
+            builder: (context) => const BiometricScreen(),
           ));
     } else {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) =>HomeScreen(),
+            builder: (context) =>const HomeScreen(),
           ));
     }
   }
@@ -84,6 +82,7 @@ class UtilityProvider with ChangeNotifier {
                           child: const Text("Yes"),
                         ),
                       ),
+
                       const SizedBox(width: 15),
                       Expanded(
                           child: ElevatedButton(

@@ -43,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.microtask(() => context.read<DbProvider>().loadContacts());
     fetchingUserName();
 
-    // TODO: implement initState
     super.initState();
   }
 
@@ -54,8 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isSearching = true;
     });
-    futureSearchData =
-        context.read<DbProvider>().loadContacts(query: valueText);
+    // futureSearchData =
+    //     context.read<DbProvider>().loadContacts(query: valueText);
   }
 
   @override
@@ -92,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
               returnValue = CupertinoTabView(builder: (context) {
                 return isSearching != true
                     ? DbListWidget()
-                    : searchListWidget();
+                    : DbListWidget();
               });
               break;
             case 1:
@@ -159,7 +158,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       shape: BoxShape.rectangle),
                   child: TextField(
                     onChanged: (val) {
-                      filteredValue(val);
+                      Future.microtask(() => context.read<DbProvider>()
+                        ..filterdata(val));
+
+                      //filteredValue(val);
                     },
                     decoration: const InputDecoration(
                       hintText: "Search Contact Here",
@@ -340,128 +342,128 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget searchListWidget() {
-    return Scaffold(
-        drawer: Drawer(
-            semanticLabel: "Drawer",
-            child: Column(children: [
-              UserAccountsDrawerHeader(
-                accountName: Text(userName),
-                accountEmail: const Text("SampleSite.Com"),
-                currentAccountPicture: const CircleAvatar(
-                  backgroundImage: AssetImage("assets/circle_male.jpg"),
-                  radius: 50.0,
-                ),
-              ),
-              TextButton(onPressed: () {}, child: const Text("About")),
-              TextButton(onPressed: () {}, child: const Text("Settings")),
-              TextButton(onPressed: () {}, child: const Text("Menu")),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'route');
-                  },
-                  child: const Text("Notification")),
-            ])),
-        appBar: AppBar(
-          centerTitle: true,
-          titleSpacing: 2,
-          title: !isSearching
-              ? const Text(
-                  "Home",
-                )
-              : Container(
-                  height: 30,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                      shape: BoxShape.rectangle),
-                  child: TextField(
-                    onChanged: (val) {
-                      filteredValue(val);
-                    },
-                    decoration: const InputDecoration(
-                      hintText: "Search Contact Here",
-                      hintStyle: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                ),
-          actions: [
-            isSearching
-                ? IconButton(
-                    icon: const Icon(Icons.cancel),
-                    onPressed: () {
-                      setState(() {
-                        isSearching = false;
-                        bottomSearchIconTap = false;
-                      });
-                    },
-                  )
-                : IconButton(
-                    icon: const Icon(Icons.search),
-                    onPressed: () {
-                      setState(() {
-                        isSearching = true;
-                      });
-                    },
-                  ),
-            IconButton(
-              icon: const Icon(Icons.location_on_sharp),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const GoogleMapScreenFlutter(),
-                    ));
-              },
-            )
-          ],
-        ),
-        body: Consumer<DbProvider>(builder: (context, value, child) {
-          if (value.contactUser == null) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: value.contactUser!.length,
-                      itemBuilder: (context, int index) {
-                        var item = value.contactUser!.elementAt(index);
-                        return Card(
-                            child: Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            ListTile(
-                              onTap: () async {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AboutUser(
-                                              userContacts: value.contactUser,
-                                              index: index,
-                                            )));
-                              },
-                              leading: CircleAvatar(
-                                radius: 37,
-                                backgroundImage: item.profileImage.isEmpty
-                                    ? const AssetImage("assets/no_image.jpg")
-                                        as ImageProvider
-                                    : NetworkImage(item.profileImage),
-                              ),
-                              title: Text(item.username),
-                              subtitle: item.name != null
-                                  ? Text(item.name)
-                                  : const Text("No user name"),
-                            ),
-                          ],
-                        ));
-                      }),
-                ),
-              ],
-            );
-          }
-        }));
-  }
+  // Widget searchListWidget() {
+  //   return Scaffold(
+  //       drawer: Drawer(
+  //           semanticLabel: "Drawer",
+  //           child: Column(children: [
+  //             UserAccountsDrawerHeader(
+  //               accountName: Text(userName),
+  //               accountEmail: const Text("SampleSite.Com"),
+  //               currentAccountPicture: const CircleAvatar(
+  //                 backgroundImage: AssetImage("assets/circle_male.jpg"),
+  //                 radius: 50.0,
+  //               ),
+  //             ),
+  //             TextButton(onPressed: () {}, child: const Text("About")),
+  //             TextButton(onPressed: () {}, child: const Text("Settings")),
+  //             TextButton(onPressed: () {}, child: const Text("Menu")),
+  //             TextButton(
+  //                 onPressed: () {
+  //                   Navigator.pushNamed(context, 'route');
+  //                 },
+  //                 child: const Text("Notification")),
+  //           ])),
+  //       appBar: AppBar(
+  //         centerTitle: true,
+  //         titleSpacing: 2,
+  //         title: !isSearching
+  //             ? const Text(
+  //                 "Home",
+  //               )
+  //             : Container(
+  //                 height: 30,
+  //                 decoration: BoxDecoration(
+  //                     color: Colors.white,
+  //                     borderRadius: BorderRadius.circular(5),
+  //                     shape: BoxShape.rectangle),
+  //                 child: TextField(
+  //                   onChanged: (val) {
+  //                     filteredValue(val);
+  //                   },
+  //                   decoration: const InputDecoration(
+  //                     hintText: "Search Contact Here",
+  //                     hintStyle: TextStyle(color: Colors.grey),
+  //                   ),
+  //                 ),
+  //               ),
+  //         actions: [
+  //           isSearching
+  //               ? IconButton(
+  //                   icon: const Icon(Icons.cancel),
+  //                   onPressed: () {
+  //                     setState(() {
+  //                       isSearching = false;
+  //                       bottomSearchIconTap = false;
+  //                     });
+  //                   },
+  //                 )
+  //               : IconButton(
+  //                   icon: const Icon(Icons.search),
+  //                   onPressed: () {
+  //                     setState(() {
+  //                       isSearching = true;
+  //                     });
+  //                   },
+  //                 ),
+  //           IconButton(
+  //             icon: const Icon(Icons.location_on_sharp),
+  //             onPressed: () {
+  //               Navigator.push(
+  //                   context,
+  //                   MaterialPageRoute(
+  //                     builder: (context) => const GoogleMapScreenFlutter(),
+  //                   ));
+  //             },
+  //           )
+  //         ],
+  //       ),
+  //       body: Consumer<DbProvider>(builder: (context, value, child) {
+  //         if (value.contactUser == null) {
+  //           return const Center(
+  //             child: CircularProgressIndicator(),
+  //           );
+  //         } else {
+  //           return Column(
+  //             children: [
+  //               Expanded(
+  //                 child: ListView.builder(
+  //                     itemCount: value.contactUser!.length,
+  //                     itemBuilder: (context, int index) {
+  //                       var item = value.contactUser!.elementAt(index);
+  //                       return Card(
+  //                           child: Stack(
+  //                         alignment: Alignment.bottomRight,
+  //                         children: [
+  //                           ListTile(
+  //                             onTap: () async {
+  //                               Navigator.push(
+  //                                   context,
+  //                                   MaterialPageRoute(
+  //                                       builder: (context) => AboutUser(
+  //                                             userContacts: value.contactUser,
+  //                                             index: index,
+  //                                           )));
+  //                             },
+  //                             leading: CircleAvatar(
+  //                               radius: 37,
+  //                               backgroundImage: item.profileImage.isEmpty
+  //                                   ? const AssetImage("assets/no_image.jpg")
+  //                                       as ImageProvider
+  //                                   : NetworkImage(item.profileImage),
+  //                             ),
+  //                             title: Text(item.username),
+  //                             subtitle: item.name != null
+  //                                 ? Text(item.name)
+  //                                 : const Text("No user name"),
+  //                           ),
+  //                         ],
+  //                       ));
+  //                     }),
+  //               ),
+  //             ],
+  //           );
+  //         }
+  //       }));
+  // }
 }

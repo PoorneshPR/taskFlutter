@@ -1,11 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:async';
+import 'package:sqflite/sqflite.dart';
 import 'package:task_flutter/models/ContactsModel.dart';
-import 'package:task_flutter/Services/ContactsService.dart';
 
 class DbConnection {
   DbConnection._createInstance();
@@ -53,16 +52,16 @@ class DbConnection {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<List<ContactsModel>> getContacts({String? query}) async {
+  Future<List<ContactsModel>?> getContacts() async {
     Database? db = await database;
 
-    final List<Map<String, dynamic>> maps = await db!.query(
+    final List<Map<String, dynamic>>? maps = await db?.query(
       _tableName,
     );
-    if (query != null) {
-      return ContactsService().fetchData(query: query);
+    if (maps!=null && maps.isNotEmpty) {
+      return List.generate(maps.length,
+          (index) => ContactsModel.fromJson(jsonDecode(maps[index][_contact])));
     }
-    return List.generate(maps.length,
-        (index) => ContactsModel.fromJson(jsonDecode(maps[index][_contact])));
+    return null;
   }
 }

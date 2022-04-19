@@ -1,7 +1,8 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:task_flutter/screens/NotifyScreen.dart';
+
 class PushNotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   late NotificationSettings _settings;
@@ -19,48 +20,38 @@ class PushNotificationService {
     importance: Importance.max,
   );
 
-  void initilializeNotification(BuildContext context) async {
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+  void initializeNotification(BuildContext context) async {
+    AndroidFlutterLocalNotificationsPlugin? localAndroidFlutterNotifications =
+        flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+//to do pushNamed....
+    await localAndroidFlutterNotifications
         ?.initialize(const AndroidInitializationSettings("dart_icon"),
             onSelectNotification: (String? value) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) {
-          return NotifyScreen();
+          return const NotifyScreen();
         },
       ));
     });
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
+
+    await localAndroidFlutterNotifications?.createNotificationChannel(channel);
 
     //Method to Request Notification
-    await requestNotification();
-
-    await _onMessage(context);
-    await _onMessageOpenedApp(context);
+    await requestNotification(context);
   }
 
-  Future<void> requestNotification() async {
+  Future<void> requestNotification(BuildContext context) async {
     _settings = await _firebaseMessaging.requestPermission();
     if (_settings.authorizationStatus == AuthorizationStatus.authorized) {
-      // ignore: avoid_kdebugPrint
-      debugPrint('User granted permission');
-    } else if (_settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
-      // ignore: avoid_kdebugPrint
-      debugPrint('User granted provisional permission');
-    } else {
-      // ignore: avoid_kdebugPrint
-      debugPrint('User declined or has not accepted permission');
+      await _onMessage(context);
+      await _onMessageOpenedApp(context);
     }
   }
 
   /// app isn't in open state && foreground state
   Future<void> _onMessage(BuildContext context) async {
-    await FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       globalRemote = message;
@@ -81,7 +72,7 @@ class PushNotificationService {
     });
   }
 
-  ///while the app is in backgroundbut in opened state and user taps...
+  /// while the app is in background in opened state and user taps...
   Future<void> _onMessageOpenedApp(BuildContext context) async {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       AndroidNotification? android = message.notification?.android;
