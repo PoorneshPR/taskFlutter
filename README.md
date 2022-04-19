@@ -1,2 +1,2 @@
 # taskFlutter
-trainig from base
+Learning Each Features
