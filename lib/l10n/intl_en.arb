@@ -1,5 +1,23 @@
 {
-  "@@locale": "ar",
-  "Login": "تسجيل الدخول"
-
+  "@@locale": "en",
+  "Login": "Login",
+  "loginWithGoogle": "Login with Google",
+  "emailAddress": "Enter your Email Address",
+  "password": "Enter your Password",
+  "loginWithFacebook": "Login with Facebook",
+  "login": "Login",
+  "name": "Enter your Name",
+  "or" : "or",
+  "home": "Home",
+  "selectLanguage": "Select Language",
+  "logout": "Logout",
+  "turnOnFingerPrint": "Turn on FingerPrint",
+  "search": "Search",
+  "profile": "Profile",
+  "underDevelopment": "underDevelopment",
+  "About": "About",
+  "Settings": "Settings",
+  "Menu": "Menu",
+  "Notification": "Notification",
+  "Submit": "Submit"
 }

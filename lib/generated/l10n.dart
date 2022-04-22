@@ -50,11 +50,201 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `تسجيل الدخول`
+  /// `Login`
   String get Login {
     return Intl.message(
-      'تسجيل الدخول',
+      'Login',
       name: 'Login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login with Google`
+  String get loginWithGoogle {
+    return Intl.message(
+      'Login with Google',
+      name: 'loginWithGoogle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your Email Address`
+  String get emailAddress {
+    return Intl.message(
+      'Enter your Email Address',
+      name: 'emailAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your Password`
+  String get password {
+    return Intl.message(
+      'Enter your Password',
+      name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login with Facebook`
+  String get loginWithFacebook {
+    return Intl.message(
+      'Login with Facebook',
+      name: 'loginWithFacebook',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get login {
+    return Intl.message(
+      'Login',
+      name: 'login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your Name`
+  String get name {
+    return Intl.message(
+      'Enter your Name',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `or`
+  String get or {
+    return Intl.message(
+      'or',
+      name: 'or',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get home {
+    return Intl.message(
+      'Home',
+      name: 'home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Language`
+  String get selectLanguage {
+    return Intl.message(
+      'Select Language',
+      name: 'selectLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get logout {
+    return Intl.message(
+      'Logout',
+      name: 'logout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turn on FingerPrint`
+  String get turnOnFingerPrint {
+    return Intl.message(
+      'Turn on FingerPrint',
+      name: 'turnOnFingerPrint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `underDevelopment`
+  String get underDevelopment {
+    return Intl.message(
+      'underDevelopment',
+      name: 'underDevelopment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `About`
+  String get About {
+    return Intl.message(
+      'About',
+      name: 'About',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get Settings {
+    return Intl.message(
+      'Settings',
+      name: 'Settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Menu`
+  String get Menu {
+    return Intl.message(
+      'Menu',
+      name: 'Menu',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification`
+  String get Notification {
+    return Intl.message(
+      'Notification',
+      name: 'Notification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submit`
+  String get Submit {
+    return Intl.message(
+      'Submit',
+      name: 'Submit',
       desc: '',
       args: [],
     );

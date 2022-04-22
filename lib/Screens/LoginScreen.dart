@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_flutter/screens/HomeScreen.dart';
 import 'package:task_flutter/Services/Provider/LoginProvider.dart';
+import 'package:task_flutter/screens/HomeScreen.dart';
 import '../Services/Provider/AuthenticationProvider.dart';
 import '../Services/Provider/UtilityProvider.dart';
+import '../generated/l10n.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -33,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final translated = S.of(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -53,8 +55,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
-                        hintText: "enter name",
-                        labelText: "enter your name",
+                        hintText: translated.name,
+                        labelText: translated.name,
                         suffixIcon: const Icon(Icons.person_outline),
                         focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(color: Colors.black87),
@@ -78,8 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         suffixIcon: const Icon(Icons.email_outlined),
-                        hintText: "enter email",
-                        labelText: "enter your email",
+                        hintText: translated.emailAddress,
+                        labelText: translated.emailAddress,
                         focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(color: Colors.black87),
                           borderRadius: BorderRadius.circular(20.0),
@@ -97,8 +99,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         suffixIcon: const Icon(Icons.lock_outline),
-                        hintText: "enter password",
-                        labelText: "enter password",
+                        hintText: translated.password,
+                        labelText: translated.password,
                         focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(color: Colors.black87),
                           borderRadius: BorderRadius.circular(20.0),
@@ -113,7 +115,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        debugPrint("user validation success");
                         widget.emailValue = emailController.value.text;
                         widget.pwdValue = pwdController.value.text;
                         widget.userNameValue = userNameController.value.text;
@@ -128,7 +129,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           context
                               .read<LoginProvider>()
                               .userSetLoginCheck(_loginStatus);
-                          UtilityProvider().setStringToUserName(widget.userNameValue);
+                          UtilityProvider()
+                              .setStringToUserName(widget.userNameValue);
 
                           Navigator.push(
                               context,
@@ -147,10 +149,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               FutureBuilder(
-                  future:  AuthenticationProvider().initializeFirebase(),
+                  future: AuthenticationProvider().initializeFirebase(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      return const Text("error in initializing the fire base app");
+                      return const Text(
+                          "error in initializing the fire base app");
                     } else if (snapshot.connectionState ==
                         ConnectionState.done) {
                       return OutlinedButton(
@@ -165,13 +168,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           onPressed: () async {
                             await context
-                                .read< AuthenticationProvider>()
+                                .read<AuthenticationProvider>()
                                 .signInGoogle(context)
                                 .then((value) async {
                               if (value != null) {
                                 _loginStatus = true;
                                 UtilityProvider().setStringToUserName(context
-                                    .read< AuthenticationProvider>()
+                                    .read<AuthenticationProvider>()
                                     .userdetails
                                     .toString());
 
@@ -183,8 +186,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   MaterialPageRoute(
                                       builder: (context) => const HomeScreen()),
                                 );
-                              } else {
-                                debugPrint('value is null');
                               }
                             });
                           },
@@ -193,8 +194,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const <Widget>[
-                                    Image(
+                                  children: <Widget>[
+                                    const Image(
                                       image:
                                           AssetImage("assets/Google_Logo.png"),
                                       height: 23.0,
@@ -202,8 +203,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     Padding(
                                       padding: EdgeInsets.only(left: 10),
                                       child: Text(
-                                        'Sign in with Google',
-                                        style: TextStyle(
+                                        translated.loginWithGoogle,
+                                        style: const TextStyle(
                                           fontSize: 20,
                                           color: Colors.black54,
                                           fontWeight: FontWeight.w600,
@@ -226,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(20))),
                     onPressed: () async {
                       context
-                          .read< AuthenticationProvider>()
+                          .read<AuthenticationProvider>()
                           .signInFacebook(context)
                           .then((value) {
                         if (value != null) {
@@ -237,7 +238,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               .read<LoginProvider>()
                               .userSetLoginCheck(_loginStatus);
                           fBInDetails = value;
-                          debugPrint('name  ${fBInDetails!['name']}');
 
                           context
                               .read<LoginProvider>()
@@ -251,8 +251,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             MaterialPageRoute(
                                 builder: (context) => const HomeScreen()),
                           );
-                        } else {
-                          debugPrint('value is null');
                         }
                       });
                     },
@@ -261,16 +259,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
-                              Image(
+                            children: <Widget>[
+                              const Image(
                                 image: AssetImage("assets/fb_logo.jpg"),
                                 height: 23.0,
                               ),
                               Padding(
                                 padding: EdgeInsets.only(left: 10),
                                 child: Text(
-                                  'Sign in with FB',
-                                  style: TextStyle(
+                                  translated.loginWithFacebook,
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.black54,
                                     fontWeight: FontWeight.w600,

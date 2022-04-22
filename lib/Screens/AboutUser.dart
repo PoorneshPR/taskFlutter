@@ -463,9 +463,9 @@ class _AboutUserState extends State<AboutUser> {
               Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Padding(padding: EdgeInsets.only(left: 20)),
-                    Icon(Icons.web_outlined, size: 30),
-                    SizedBox(height: 8, width: 20),
+                    const Padding(padding: EdgeInsets.only(left: 20)),
+                    const Icon(Icons.web_outlined, size: 30),
+                    const SizedBox(height: 8, width: 20),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[

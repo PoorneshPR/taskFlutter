@@ -22,6 +22,31 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "Login": MessageLookupByLibrary.simpleMessage("Login")
+        "About": MessageLookupByLibrary.simpleMessage("About"),
+        "Login": MessageLookupByLibrary.simpleMessage("Login"),
+        "Menu": MessageLookupByLibrary.simpleMessage("Menu"),
+        "Notification": MessageLookupByLibrary.simpleMessage("Notification"),
+        "Settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "Submit": MessageLookupByLibrary.simpleMessage("Submit"),
+        "emailAddress":
+            MessageLookupByLibrary.simpleMessage("Enter your Email Address"),
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "loginWithFacebook":
+            MessageLookupByLibrary.simpleMessage("Login with Facebook"),
+        "loginWithGoogle":
+            MessageLookupByLibrary.simpleMessage("Login with Google"),
+        "logout": MessageLookupByLibrary.simpleMessage("Logout"),
+        "name": MessageLookupByLibrary.simpleMessage("Enter your Name"),
+        "or": MessageLookupByLibrary.simpleMessage("or"),
+        "password": MessageLookupByLibrary.simpleMessage("Enter your Password"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "selectLanguage":
+            MessageLookupByLibrary.simpleMessage("Select Language"),
+        "turnOnFingerPrint":
+            MessageLookupByLibrary.simpleMessage("Turn on FingerPrint"),
+        "underDevelopment":
+            MessageLookupByLibrary.simpleMessage("underDevelopment")
       };
 }

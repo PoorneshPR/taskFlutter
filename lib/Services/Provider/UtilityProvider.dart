@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Screens/HomeScreen.dart';
+import '../../generated/l10n.dart';
 import '../../screens/BioMetricsScreen.dart';
 
 class UtilityProvider with ChangeNotifier {
   SharedPreferences? pref;
+  static const String _tKLanguageCode = "languageCode";
 
   addMapLocToSP(String titleValue) async {
     SharedPreferences pref;
@@ -42,6 +44,17 @@ class UtilityProvider with ChangeNotifier {
   getStringToUserName() async {
     pref = await SharedPreferences.getInstance();
     return pref?.getString("userName");
+  }
+  getLocale() async {
+pref= await SharedPreferences.getInstance();
+String languageCode = pref?.getString(_tKLanguageCode) ?? "en";
+return languageCode;
+  }
+  setLocale(String languageCode) async {
+    pref= await SharedPreferences.getInstance();
+  pref?.setString(_tKLanguageCode,languageCode);
+  print(languageCode);
+    return languageCode;
   }
 
   fingerPrintStatus(BuildContext context) async {

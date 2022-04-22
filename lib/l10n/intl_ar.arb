@@ -1,4 +1,23 @@
 {
-  "@@locale": "en",
-  "Login": "Login"
+  "@@locale": "ar",
+  "Login": "تسجيل الدخول",
+  "loginWithGoogle" : "تسجيل الدخول مع جوجل",
+  "emailAddress" : "أدخل إضافات البريد الإلكتروني الخاصة بك",
+  "password" : "أدخل كلمة المرور الخاصة بك",
+  "loginWithFacebook" : "تسجيل الدخول مع الفيسبوك",
+  "login" : "تسجيل الدخول",
+  "name" : "أدخل اسمك",
+  "or" : "أو",
+  "home" : "وطن",
+  "profile" : "الملف الشخصي",
+  "turnOnFingerPrint": "تشغيل بصمة الإصبع",
+  "search": "بحث",
+  "underDevelopment": "التخلف",
+  "About": "عن",
+  "Settings": "اعدادات",
+  "Menu": "قائمة",
+  "Notification": "اخطار",
+  "selectLanguage": "اختار اللغة",
+  "Logout": "تسجيل خروج",
+  "Submit":"إرسال"
 }
