@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:task_flutter/screens/NotifyScreen.dart';
 
+import 'Routes/RoutesUtils.dart';
+
 class PushNotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   late NotificationSettings _settings;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
   RemoteMessage? globalRemote;
   static const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'Task Flutter',
@@ -22,18 +24,17 @@ class PushNotificationService {
 
   void initializeNotification(BuildContext context) async {
     AndroidFlutterLocalNotificationsPlugin? localAndroidFlutterNotifications =
-        flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
+    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
 //to do pushNamed....
     await localAndroidFlutterNotifications
         ?.initialize(const AndroidInitializationSettings("dart_icon"),
-            onSelectNotification: (String? value) {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) {
-          return const NotifyScreen();
-        },
-      ));
-    });
+        onSelectNotification: (String? value) {
+          RoutesUtils.navToNotify(context);
+
+
+
+        });
 
     await localAndroidFlutterNotifications?.createNotificationChannel(channel);
 
@@ -66,8 +67,8 @@ class PushNotificationService {
                     importance: channel.importance,
                     channelDescription: channel.description,
                     icon:
-                        "dart_icon") //The Same icon name should pass in the AndroidManifest.xml MetaData android.resource,
-                ));
+                    "dart_icon") //The Same icon name should pass in the AndroidManifest.xml MetaData android.resource,
+            ));
       }
     });
   }
@@ -78,7 +79,8 @@ class PushNotificationService {
       AndroidNotification? android = message.notification?.android;
       if (message.notification != null && android != null) {
         final routeFromMessage = message.data['route'];
-        Navigator.pushNamed(context, routeFromMessage);
+        RoutesUtils.navToNotify(context);
+
       }
     });
   }

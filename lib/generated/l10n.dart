@@ -249,6 +249,16 @@ class S {
       args: [],
     );
   }
+
+  /// `This is my notification Screen`
+  String get NotifyMessage {
+    return Intl.message(
+      'This is my notification Screen',
+      name: 'NotifyMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

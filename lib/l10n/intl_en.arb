@@ -19,5 +19,6 @@
   "Settings": "Settings",
   "Menu": "Menu",
   "Notification": "Notification",
-  "Submit": "Submit"
+  "Submit": "Submit",
+  "NotifyMessage": "This is my notification Screen"
 }

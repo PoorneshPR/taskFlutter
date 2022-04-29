@@ -10,6 +10,9 @@ import 'package:task_flutter/Services/Provider/DbProvider.dart';
 import 'package:task_flutter/Services/Provider/LocalProvider.dart';
 import 'package:task_flutter/Services/Provider/LoginProvider.dart';
 import 'package:task_flutter/Services/Provider/UtilityProvider.dart';
+import 'package:task_flutter/Services/Routes/RouteNames.dart';
+import 'package:task_flutter/Services/Routes/RoutesServices.dart';
+import 'package:task_flutter/Services/Routes/RoutesUtils.dart';
 import 'package:task_flutter/screens/NotifyScreen.dart';
 import 'generated/l10n.dart';
 
@@ -42,29 +45,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<LocalProvider>(builder: (context, locale, child) =>  MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        locale: locale.locale,
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      locale: locale.locale,initialRoute: RouteNames.initialRoute,
 
-        home: AnimatedSplashScreen(
-            duration: 3000,
-            splash: Image.asset("assets/dart_icon.png", fit: BoxFit.fitHeight),
-            nextScreen: const HomeScreen(),
-            splashTransition: SplashTransition.fadeTransition,
-            backgroundColor: Colors.white),
-        //    home:HomeScreen()
-        routes: {
-          "red": (_) => const NotifyScreen(),
-          "home": (_) => const HomeScreen(),
-        },
-      ),
+      home: AnimatedSplashScreen(
+          duration: 3000,
+          splash: Image.asset("assets/dart_icon.png", fit: BoxFit.fitHeight),
+          nextScreen: const UserLoginCheckScreen(),
+          splashTransition: SplashTransition.fadeTransition,
+          backgroundColor: Colors.white),
+      //    home:HomeScreen()
+      onGenerateRoute: RoutesServices().generateRouteServices,
+    ),
     );
   }
 }

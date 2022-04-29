@@ -23,16 +23,19 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
   geocoding.Placemark? place;
   bool currentLocEnabled = false;
   bool isStoredValue = false;
+
   getStoredLocation() async {
     await UtilityProvider().getMapLocToSP().then((value) {
       storedVal = value;
-      debugPrint('----------------stored value is $storedVal');
     });
+
   }
+
 
   @override
   void initState() {
     getStoredLocation();
+    getSetAddress();
     super.initState();
   }
 
@@ -52,8 +55,8 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
       userPosition ??= const LatLng(10.5276416, 76.2144349);
     }
     List<geocoding.Placemark> placemarks =
-        await geocoding.placemarkFromCoordinates(
-            userPosition!.latitude, userPosition!.longitude);
+    await geocoding.placemarkFromCoordinates(
+        userPosition!.latitude, userPosition!.longitude);
     userLocSelect = placemarks.first;
     userLocalitySelect = userLocSelect!.locality!;
 
@@ -77,7 +80,6 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
     List<geocoding.Placemark> placemarks = await geocoding
         .placemarkFromCoordinates(tapPos!.latitude, tapPos.longitude);
     place = placemarks.elementAt(0);
-    debugPrint('>>>>>>>>>>>>>$place}');
     setState(() {
       String markerIdVal =
           'Current location ${tapPos.latitude} , ${tapPos.longitude}';
@@ -106,6 +108,9 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
           children: [
             Expanded(
               child: FutureBuilder(
+
+
+
                   future: currentLocation(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData == true) {
@@ -115,7 +120,7 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
                         mapType: MapType.normal,
                         padding: const EdgeInsets.all(30),
                         initialCameraPosition:
-                            CameraPosition(target: userPosition!, zoom: 20),
+                        CameraPosition(target: userPosition!, zoom: 20),
                         onMapCreated: onMapCreated,
                         onCameraMove: (CameraPosition position) {
                           if (currentLocEnabled == true) {
@@ -168,12 +173,10 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
               Expanded(
                 child: Text(
                     value?.locality != null
-                        ? "${value!.locality.toString()} "
+                        ? "${value?.locality.toString()} "
                         : isStoredValue == true
-                            ? storedVal
-                            : "Find Your Address",
-
-                    //
+                        ? storedVal
+                        : "${UtilityProvider().getMapLocToSP()}",
                     style: const TextStyle(
                         color: Colors.black, fontSize: 18, height: 2)),
               ),

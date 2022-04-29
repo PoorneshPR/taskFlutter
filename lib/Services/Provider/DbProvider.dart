@@ -1,22 +1,22 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:task_flutter/DbHelper/DbConnection.dart';
 import 'package:task_flutter/Services/ContactsService.dart';
-import '../../DbHelper/DbConnection.dart';
-import '../../models/ContactsModel.dart';
+import 'package:task_flutter/Models/ContactsModel.dart';
 
 class DbProvider with ChangeNotifier {
   final DbConnection _db = DbConnection.instance;
 
-  ContactsList? _lists;
+  // ContactsList? _lists;
   List<ContactsModel>? contactUser;
   List<ContactsModel>? initialData;
 
-  ContactsList? get lists => _lists;
+  // ContactsList? get lists => _lists;
 
-  set lists(ContactsList? lists) {
-    _lists = lists;
-    notifyListeners();
-  }
+  // set lists(ContactsList? lists) {
+  //   _lists = lists;
+  //   notifyListeners();
+  // }
 
   Future<String?> _loadApiData() async {
     return await ContactsService().getApiData();
@@ -28,9 +28,9 @@ class DbProvider with ChangeNotifier {
     debugPrint('length ${contactUser?.length}');
     if (contactUser == null || contactUser!.isEmpty) {
       String? jsonString = await _loadApiData();
-      final jsonResponse = json.decode(jsonString!);
-      ContactsList data = ContactsList.fromJson(jsonResponse);
-      data.contactList?.forEach((element) async {
+      List<dynamic> jsonResponse = json.decode(jsonString!);
+      List<ContactsModel> data = jsonResponse.map((e) => ContactsModel.fromJson(e)).toList();
+      data.forEach((element) async {
         await _db.insertIntoContacts(element);
       });
       contactUser = await _db.getContacts();
@@ -41,7 +41,7 @@ class DbProvider with ChangeNotifier {
   }
   Future<void>filterdata(String query)async {
     if(query.isNotEmpty){
-      contactUser = contactUser?.where((element) => element.username.toLowerCase().contains(query.toLowerCase())).toList();
+      contactUser = contactUser?.where((element) => element.username!.toLowerCase().contains(query.toLowerCase())).toList();
       notifyListeners();
     }else{
       contactUser =initialData;

@@ -19,5 +19,7 @@
   "Notification": "اخطار",
   "selectLanguage": "اختار اللغة",
   "Logout": "تسجيل خروج",
-  "Submit":"إرسال"
+  "Submit":"إرسال",
+  "NotifyMessage": "هذه هي شاشة الإشعارات الخاصة بي"
+
 }

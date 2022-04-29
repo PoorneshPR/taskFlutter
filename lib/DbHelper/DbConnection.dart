@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:task_flutter/models/ContactsModel.dart';
+import 'package:task_flutter/Models/ContactsModel.dart';
 
 class DbConnection {
   DbConnection._createInstance();
@@ -38,8 +38,8 @@ class DbConnection {
     await db.execute(create);
   }
 
-  Future<void> insertIntoContacts(ContactsModel contact) async {
-    var contactValue = contact.toJson();
+  Future<void> insertIntoContacts(ContactsModel? contact) async {
+    var contactValue = contact?.toJson();
 
     String _jsondata = jsonEncode(contactValue);
 
@@ -60,7 +60,7 @@ class DbConnection {
     );
     if (maps!=null && maps.isNotEmpty) {
       return List.generate(maps.length,
-          (index) => ContactsModel.fromJson(jsonDecode(maps[index][_contact])));
+              (index) => ContactsModel.fromJson(jsonDecode(maps[index][_contact])));
     }
     return null;
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_flutter/Services/Provider/LoginProvider.dart';
+import 'package:task_flutter/Services/Routes/RoutesUtils.dart';
 import 'package:task_flutter/screens/HomeScreen.dart';
 import '../Services/Provider/AuthenticationProvider.dart';
 import '../Services/Provider/UtilityProvider.dart';
@@ -122,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         context
                             .read<LoginProvider>()
                             .signInUser(widget.emailValue, widget.pwdValue,
-                                widget.userNameValue, context)
+                            widget.userNameValue, context)
                             .then((value) {
                           _loginStatus = true;
 
@@ -132,10 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           UtilityProvider()
                               .setStringToUserName(widget.userNameValue);
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomeScreen()));
+                          RoutesUtils.navToHome(context);
                           controllerClear();
                         });
                       }
@@ -159,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       return OutlinedButton(
                           style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
+                            MaterialStateProperty.all(Colors.white),
                             shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40),
@@ -182,10 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     .read<LoginProvider>()
                                     .userSetLoginCheck(_loginStatus);
 
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomeScreen()),
-                                );
+                                RoutesUtils.navToHome(context);
                               }
                             });
                           },
@@ -197,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   children: <Widget>[
                                     const Image(
                                       image:
-                                          AssetImage("assets/Google_Logo.png"),
+                                      AssetImage("assets/Google_Logo.png"),
                                       height: 23.0,
                                     ),
                                     Padding(
@@ -247,10 +242,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               .userSetLoginCheck(_loginStatus)
                               .toString());
 
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                                builder: (context) => const HomeScreen()),
-                          );
+                          RoutesUtils.navToHome(context);
+
                         }
                       });
                     },

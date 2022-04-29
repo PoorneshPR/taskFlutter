@@ -19,7 +19,7 @@ class UtilityProvider with ChangeNotifier {
   getMapLocToSP() async {
     pref = await SharedPreferences.getInstance();
     String location = '';
-    location = pref!.getString("RecentLocation") ?? '';
+    location = pref?.getString("RecentLocation") ?? '';
     return location;
   }
 
@@ -46,14 +46,14 @@ class UtilityProvider with ChangeNotifier {
     return pref?.getString("userName");
   }
   getLocale() async {
-pref= await SharedPreferences.getInstance();
-String languageCode = pref?.getString(_tKLanguageCode) ?? "en";
-return languageCode;
+    pref= await SharedPreferences.getInstance();
+    String languageCode = pref?.getString(_tKLanguageCode) ?? "en";
+    return languageCode;
   }
   setLocale(String languageCode) async {
     pref= await SharedPreferences.getInstance();
-  pref?.setString(_tKLanguageCode,languageCode);
-  print(languageCode);
+    pref?.setString(_tKLanguageCode,languageCode);
+    print(languageCode);
     return languageCode;
   }
 
@@ -99,12 +99,12 @@ return languageCode;
                       const SizedBox(width: 15),
                       Expanded(
                           child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text("No",
-                            style: TextStyle(color: Colors.black)),
-                      ))
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("No",
+                                style: TextStyle(color: Colors.black)),
+                          ))
                     ],
                   )
                 ],

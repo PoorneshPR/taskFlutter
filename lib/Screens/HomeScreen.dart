@@ -2,13 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_flutter/Screens/GoogleMapsScreen.dart';
-import 'package:task_flutter/screens/AboutUser.dart';
 import 'package:task_flutter/screens/UserLoginCheck.dart';
+
 import '../Services/Provider/AuthenticationProvider.dart';
 import '../Services/Provider/DbProvider.dart';
 import '../Services/Provider/LocalProvider.dart';
 import '../Services/Provider/LoginProvider.dart';
 import '../Services/Provider/UtilityProvider.dart';
+import '../Services/Routes/Arguments.dart';
+import '../Services/Routes/RouteNames.dart';
+import '../Services/Routes/RoutesUtils.dart';
 import '../generated/l10n.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isSearching = false;
   bool fingerPrintTurnOn = false;
   String userName = "";
+  String text = "";
 
   Future<String> fetchingUserName() async {
     if (context.read<AuthenticationProvider>().userInfo != null) {
@@ -161,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
               TextButton(onPressed: () {}, child: Text(translated.Menu)),
               TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, 'red');
+                    RoutesUtils.navToNotify(context);
                   },
                   child: Text(translated.Notification)),
             ])),
@@ -170,46 +174,44 @@ class _HomeScreenState extends State<HomeScreen> {
           titleSpacing: 2,
           title: !isSearching
               ? Text(
-                  translated.home,
-                )
+            translated.home,
+          )
               : Container(
-                  height: 30,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                      shape: BoxShape.rectangle),
-                  child: TextField(
-                    onChanged: (val) {
-                      Future.microtask(
-                          () => context.read<DbProvider>()..filterdata(val));
-
-                      //filteredValue(val);
-                    },
-                    decoration: const InputDecoration(
-                      hintText: "Search Contact Here",
-                      hintStyle: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                ),
+            height: 30,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                shape: BoxShape.rectangle),
+            child: TextField(
+              onChanged: (val) {
+                Future.microtask(
+                        () => context.read<DbProvider>()..filterdata(val));
+              },
+              decoration: const InputDecoration(
+                hintText: "Search Contact Here",
+                hintStyle: TextStyle(color: Colors.grey),
+              ),
+            ),
+          ),
           actions: [
             isSearching
                 ? IconButton(
-                    icon: Icon(Icons.cancel),
-                    onPressed: () {
-                      setState(() {
-                        isSearching = false;
-                        bottomSearchIconTap = false;
-                      });
-                    },
-                  )
+              icon: const Icon(Icons.cancel),
+              onPressed: () {
+                setState(() {
+                  isSearching = false;
+                  bottomSearchIconTap = false;
+                });
+              },
+            )
                 : IconButton(
-                    icon: const Icon(Icons.search),
-                    onPressed: () {
-                      setState(() {
-                        isSearching = true;
-                      });
-                    },
-                  ),
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                setState(() {
+                  isSearching = true;
+                });
+              },
+            ),
             IconButton(
               icon: const Icon(Icons.location_on_sharp),
               onPressed: () {
@@ -232,37 +234,33 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Expanded(
                   child: ListView.builder(
-                      itemCount: value.contactUser!.length,
+                      itemCount: value.contactUser?.length,
                       itemBuilder: (context, int index) {
-                        var item = value.contactUser!.elementAt(index);
+                        dynamic item = value.contactUser?.elementAt(index);
                         return Card(
                             child: Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            ListTile(
-                              onTap: () async {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AboutUser(
-                                              userContacts: value.contactUser,
-                                              index: index,
-                                            )));
-                              },
-                              leading: CircleAvatar(
-                                radius: 37,
-                                backgroundImage: item.profileImage.isEmpty
-                                    ? const AssetImage("assets/no_image.jpg")
-                                        as ImageProvider
-                                    : NetworkImage(item.profileImage),
-                              ),
-                              title: Text(item.username),
-                              subtitle: item.name != null
-                                  ? Text(item.name)
-                                  : const Text("No user name"),
-                            ),
-                          ],
-                        ));
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                ListTile(
+                                  onTap: () async {
+                                    Arguments arg = Arguments(userContacts: item);
+                                    Navigator.of(context,rootNavigator: true).pushNamed( RouteNames.aboutScreen, arguments: arg);
+                                  },
+                                  leading: CircleAvatar(
+                                    radius: 37,
+                                    backgroundImage: item?.profileImage != null
+                                        ? NetworkImage(item?.profileImage ??
+                                        "https://upload.wikimedia.org/wikipedia/commons/b/b8/White-lion-images-20.jpg")
+                                        : const AssetImage("assets/no_image.jpg")
+                                    as ImageProvider,
+                                  ),
+                                  title: Text(item?.username ?? ""),
+                                  subtitle: item?.name != null
+                                      ? Text(item?.name ?? "")
+                                      : const Text("No user name"),
+                                ),
+                              ],
+                            ));
                       }),
                 ),
               ],
@@ -271,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }));
   }
 
-//  BottomNavigationBarMenuScreenmWidget its called to main context
+//  BottomNavigationBarMenuScreenWidget its called to main context
 
   Widget bottomMenuOption() {
     final translated = S.of(context);
@@ -322,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const UserLoginCheckScreen(),
+                              const UserLoginCheckScreen(),
                             ));
                       },
                       child: Text(

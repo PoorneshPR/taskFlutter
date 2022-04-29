@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_flutter/Services/Provider/UtilityProvider.dart';
+import 'package:task_flutter/Services/Routes/RoutesUtils.dart';
 import '../../screens/LoginScreen.dart';
 class LoginProvider with ChangeNotifier {
   String _email = "";
@@ -22,10 +23,10 @@ class LoginProvider with ChangeNotifier {
     if (value!.isNotEmpty) {
       if(value.length>=8){
 
-      if (!regExp.hasMatch(value)) {
-        return "password isn't valid";
-      }
-      return null;}
+        if (!regExp.hasMatch(value)) {
+          return "password isn't valid";
+        }
+        return null;}
 
       else{
         return "Password Length should be more than 8 characters";
@@ -55,7 +56,7 @@ class LoginProvider with ChangeNotifier {
   Future<bool?> userGetLoginCheck() async {
     userLoginStatus = await SharedPreferences.getInstance();
     return userLoginStatus?.getBool(
-      "loginStatus"
+        "loginStatus"
     );
 
   }
@@ -73,7 +74,7 @@ class LoginProvider with ChangeNotifier {
       await UtilityProvider().fingerPrintStatus(context);}
 
     else{
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+      RoutesUtils.navToLoginScreen(context);
 
     }
   }
