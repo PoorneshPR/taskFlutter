@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_flutter/Screens/GoogleMapsScreen.dart';
+import 'package:task_flutter/Screens/ShoppingScreen.dart';
 import 'package:task_flutter/screens/UserLoginCheck.dart';
 
 import '../Services/Provider/AuthenticationProvider.dart';
@@ -13,6 +14,8 @@ import '../Services/Routes/Arguments.dart';
 import '../Services/Routes/RouteNames.dart';
 import '../Services/Routes/RoutesUtils.dart';
 import '../generated/l10n.dart';
+import '../utils/hexcolors.dart';
+import 'newscreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,7 +26,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   dynamic futureSearchData;
-
   bool isSearching = false;
   bool fingerPrintTurnOn = false;
   String userName = "";
@@ -67,9 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         isLanguage = true;
         Future.microtask(() {
+          
           context.read<LocalProvider>().updateSelectedLanguage('ar');
         });
-
         // textValue = 'Switch Button is ON';
       });
     } else {
@@ -85,64 +87,90 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final translated = S.of(context);
     return WillPopScope(
-      onWillPop: () {
-        return UtilityProvider().showExitPopup(context);
-      },
-      child: CupertinoTabScaffold(
-        tabBar: CupertinoTabBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Profiles',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profiles',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.more_vert),
-              label: 'Menu',
-            ),
-          ],
-        ),
-        tabBuilder: (BuildContext context, int index) {
-          late CupertinoTabView returnValue;
-          switch (index) {
-            case 0:
-              returnValue = CupertinoTabView(builder: (context) {
-                return isSearching != true ? DbListWidget() : DbListWidget();
-              });
-              break;
-            case 1:
-              returnValue = CupertinoTabView(builder: (context) {
-                bottomSearchIconTap = true;
-
-                return Scaffold(
-                    body: Center(child: Text(translated.underDevelopment)));
-              });
-              break;
-            case 2:
-              returnValue = CupertinoTabView(builder: (context) {
-                return Scaffold(
-                    body: Center(child: Text(translated.underDevelopment)));
-              });
-              break;
-            case 3:
-              returnValue = CupertinoTabView(builder: (context) {
-                return bottomMenuOption();
-              });
-              break;
-          }
-          return returnValue;
+        onWillPop: () {
+          return UtilityProvider().showExitPopup(context);
         },
-      ),
-    );
+        child: CupertinoTabScaffold(
+            tabBar: CupertinoTabBar(
+              activeColor: HexColors("#7B7B7B"),
+              border: Border.all(width: 1, color: HexColors("#B2B3B3")),
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home_outlined,
+                    color: HexColors("#7B7B7B"),
+                    size: 25,
+                  ),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.category_outlined,
+                    color: HexColors("#707071"),
+                    size: 25,
+                  ),
+                  label: 'Categories',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.local_offer_outlined,
+                    color: HexColors("#7B7B7B"),
+                    size: 25,
+                  ),
+                  label: 'Offers',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.shopping_cart_outlined,
+                    color: HexColors("#7B7B7B"),
+                    size: 25,
+                  ),
+                  label: 'Cart',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.person_outline,
+                    color: HexColors("#7B7B7B"),
+                    size: 25,
+                  ),
+                  label: 'Account',
+                ),
+              ],
+            ),
+            tabBuilder: (BuildContext context, int index) {
+              late CupertinoTabView returnValue;
+              switch (index) {
+                case 0:
+                  returnValue = CupertinoTabView(builder: (context) {
+                    return isSearching != true
+                        ? DbListWidget()
+                        : DbListWidget();
+                  });
+                  break;
+                case 1:
+                  returnValue = CupertinoTabView(builder: (context) {
+                    return const NewScreen();
+                  });
+                  break;
+                case 2:
+                  returnValue = CupertinoTabView(builder: (context) {
+                    return ShoppingScreen();
+                  });
+                  break;
+                case 3:
+                  returnValue = CupertinoTabView(builder: (context) {
+                    return const NewScreen();
+                  });
+                  break;
+                case 4:
+                  returnValue = CupertinoTabView(builder: (context) {
+                    return bottomMenuOption();
+                  });
+                  break;
+              }
+              return returnValue;
+            }));
   }
 
 //DatabaseListWidget
@@ -174,44 +202,44 @@ class _HomeScreenState extends State<HomeScreen> {
           titleSpacing: 2,
           title: !isSearching
               ? Text(
-            translated.home,
-          )
+                  translated.home,
+                )
               : Container(
-            height: 30,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                shape: BoxShape.rectangle),
-            child: TextField(
-              onChanged: (val) {
-                Future.microtask(
-                        () => context.read<DbProvider>()..filterdata(val));
-              },
-              decoration: const InputDecoration(
-                hintText: "Search Contact Here",
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
-            ),
-          ),
+                  height: 30,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                      shape: BoxShape.rectangle),
+                  child: TextField(
+                    onChanged: (val) {
+                      Future.microtask(
+                          () => context.read<DbProvider>()..filterdata(val));
+                    },
+                    decoration: const InputDecoration(
+                      hintText: "Search Contact Here",
+                      hintStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                ),
           actions: [
             isSearching
                 ? IconButton(
-              icon: const Icon(Icons.cancel),
-              onPressed: () {
-                setState(() {
-                  isSearching = false;
-                  bottomSearchIconTap = false;
-                });
-              },
-            )
+                    icon: const Icon(Icons.cancel),
+                    onPressed: () {
+                      setState(() {
+                        isSearching = false;
+                        bottomSearchIconTap = false;
+                      });
+                    },
+                  )
                 : IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                setState(() {
-                  isSearching = true;
-                });
-              },
-            ),
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      setState(() {
+                        isSearching = true;
+                      });
+                    },
+                  ),
             IconButton(
               icon: const Icon(Icons.location_on_sharp),
               onPressed: () {
@@ -239,28 +267,30 @@ class _HomeScreenState extends State<HomeScreen> {
                         dynamic item = value.contactUser?.elementAt(index);
                         return Card(
                             child: Stack(
-                              alignment: Alignment.bottomRight,
-                              children: [
-                                ListTile(
-                                  onTap: () async {
-                                    Arguments arg = Arguments(userContacts: item);
-                                    Navigator.of(context,rootNavigator: true).pushNamed( RouteNames.aboutScreen, arguments: arg);
-                                  },
-                                  leading: CircleAvatar(
-                                    radius: 37,
-                                    backgroundImage: item?.profileImage != null
-                                        ? NetworkImage(item?.profileImage ??
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            ListTile(
+                              onTap: () async {
+                                Arguments arg = Arguments(userContacts: item);
+                                Navigator.of(context, rootNavigator: true)
+                                    .pushNamed(RouteNames.aboutScreen,
+                                        arguments: arg);
+                              },
+                              leading: CircleAvatar(
+                                radius: 37,
+                                backgroundImage: item?.profileImage != null
+                                    ? NetworkImage(item?.profileImage ??
                                         "https://upload.wikimedia.org/wikipedia/commons/b/b8/White-lion-images-20.jpg")
-                                        : const AssetImage("assets/no_image.jpg")
-                                    as ImageProvider,
-                                  ),
-                                  title: Text(item?.username ?? ""),
-                                  subtitle: item?.name != null
-                                      ? Text(item?.name ?? "")
-                                      : const Text("No user name"),
-                                ),
-                              ],
-                            ));
+                                    : const AssetImage("assets/no_image.jpg")
+                                        as ImageProvider,
+                              ),
+                              title: Text(item?.username ?? ""),
+                              subtitle: item?.name != null
+                                  ? Text(item?.name ?? "")
+                                  : const Text("No user name"),
+                            ),
+                          ],
+                        ));
                       }),
                 ),
               ],
@@ -320,7 +350,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                              const UserLoginCheckScreen(),
+                                  const UserLoginCheckScreen(),
                             ));
                       },
                       child: Text(

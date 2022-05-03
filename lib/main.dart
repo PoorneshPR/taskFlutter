@@ -14,6 +14,7 @@ import 'package:task_flutter/Services/Routes/RouteNames.dart';
 import 'package:task_flutter/Services/Routes/RoutesServices.dart';
 import 'package:task_flutter/Services/Routes/RoutesUtils.dart';
 import 'package:task_flutter/screens/NotifyScreen.dart';
+import 'Services/Provider/HomeProvider.dart';
 import 'generated/l10n.dart';
 
 void main() async {
@@ -34,6 +35,9 @@ void main() async {
     ),
     ChangeNotifierProvider<LocalProvider>(
       create: (_) => LocalProvider(),
+    ),
+    ChangeNotifierProvider<HomeProvider>(
+      create: (_) => HomeProvider(),
     )
   ], child: const MyApp()));
 }

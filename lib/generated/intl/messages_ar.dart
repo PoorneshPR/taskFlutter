@@ -48,5 +48,5 @@ class MessageLookup extends MessageLookupByLibrary {
         "turnOnFingerPrint":
             MessageLookupByLibrary.simpleMessage("تشغيل بصمة الإصبع"),
         "underDevelopment": MessageLookupByLibrary.simpleMessage("التخلف")
-       };
+      };
 }
