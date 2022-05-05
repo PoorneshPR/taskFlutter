@@ -13,7 +13,8 @@ class GoogleMapScreenFlutter extends StatefulWidget {
 }
 
 class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
-  String storedVal = '';
+  InfoWindow? storedVal;
+
   geocoding.Placemark? userLocSelect;
   String userLocalitySelect = "";
   LatLng? userPosition;
@@ -28,18 +29,17 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
     await UtilityProvider().getMapLocToSP().then((value) {
       storedVal = value;
     });
-
   }
-
 
   @override
   void initState() {
+    currentLocation();
     getStoredLocation();
     getSetAddress();
     super.initState();
   }
 
-  Future<LatLng> currentLocation() async {
+  Future<String> currentLocation() async {
     LocationData userLocationData;
     PermissionStatus permissionStatus;
     permissionStatus = await _location.requestPermission();
@@ -55,12 +55,13 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
       userPosition ??= const LatLng(10.5276416, 76.2144349);
     }
     List<geocoding.Placemark> placemarks =
-    await geocoding.placemarkFromCoordinates(
-        userPosition!.latitude, userPosition!.longitude);
+        await geocoding.placemarkFromCoordinates(
+            userPosition!.latitude, userPosition!.longitude);
     userLocSelect = placemarks.first;
     userLocalitySelect = userLocSelect!.locality!;
+    print(userLocalitySelect);
 
-    return userPosition!;
+    return userLocalitySelect;
   }
 
   Future<void> onMapCreated(GoogleMapController controller) async {
@@ -89,11 +90,11 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
         markerId: markerId,
         position: LatLng(tapPos.latitude, tapPos.longitude),
         visible: true,
-        infoWindow: InfoWindow(title: place?.name),
+        infoWindow: InfoWindow(title: place?.street),
       );
       markers.clear();
       markers[markerId] = marker;
-      storedVal = marker.infoWindow.toString();
+      storedVal = marker.infoWindow;
     });
   }
 
@@ -108,9 +109,6 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
           children: [
             Expanded(
               child: FutureBuilder(
-
-
-
                   future: currentLocation(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData == true) {
@@ -120,7 +118,7 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
                         mapType: MapType.normal,
                         padding: const EdgeInsets.all(30),
                         initialCameraPosition:
-                        CameraPosition(target: userPosition!, zoom: 20),
+                            CameraPosition(target: userPosition!, zoom: 20),
                         onMapCreated: onMapCreated,
                         onCameraMove: (CameraPosition position) {
                           if (currentLocEnabled == true) {
@@ -172,11 +170,8 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
               const Icon(Icons.location_on, size: 45),
               Expanded(
                 child: Text(
-                    value?.locality != null
-                        ? "${value?.locality.toString()} "
-                        : isStoredValue == true
-                        ? storedVal
-                        : "${UtilityProvider().getMapLocToSP()}",
+                     storedVal?.title ==null?userLocalitySelect:storedVal!.title.toString(),
+
                     style: const TextStyle(
                         color: Colors.black, fontSize: 18, height: 2)),
               ),
@@ -190,7 +185,7 @@ class _GoogleMapScreenFlutterState extends State<GoogleMapScreenFlutter> {
             height: 40,
             child: ElevatedButton(
               onPressed: () {
-                UtilityProvider().addMapLocToSP(storedVal);
+                UtilityProvider().addMapLocToSP(storedVal.toString());
                 setState(() {
                   isStoredValue = true;
                 });

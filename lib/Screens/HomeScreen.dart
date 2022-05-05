@@ -1,10 +1,10 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_flutter/Screens/GoogleMapsScreen.dart';
 import 'package:task_flutter/Screens/ShoppingScreen.dart';
 import 'package:task_flutter/screens/UserLoginCheck.dart';
-
 import '../Services/Provider/AuthenticationProvider.dart';
 import '../Services/Provider/DbProvider.dart';
 import '../Services/Provider/LocalProvider.dart';
@@ -161,6 +161,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 case 3:
                   returnValue = CupertinoTabView(builder: (context) {
                     return const NewScreen();
+                    
+                    
+
+
+                        
                   });
                   break;
                 case 4:

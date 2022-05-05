@@ -19,7 +19,7 @@ class UtilityProvider with ChangeNotifier {
   getMapLocToSP() async {
     pref = await SharedPreferences.getInstance();
     String location = '';
-    location = pref?.getString("RecentLocation") ?? '';
+    location = pref?.getString("RecentLocation") ??"";
     return location;
   }
 

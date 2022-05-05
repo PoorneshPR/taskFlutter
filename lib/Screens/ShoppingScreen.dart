@@ -1,16 +1,17 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'dart:async';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_flutter/Screens/HomeScreen.dart';
 import 'package:task_flutter/common/fontstyle.dart';
+
 import '../Models/ecommercemodels.dart';
 import '../Services/Provider/HomeProvider.dart';
 import '../Services/service_config.dart';
 import '../common/constants.dart';
 import '../utils/hexcolors.dart';
 
-import 'newscreen.dart';
 class ShoppingScreen extends StatefulWidget {
   const ShoppingScreen({Key? key}) : super(key: key);
 
@@ -20,16 +21,42 @@ class ShoppingScreen extends StatefulWidget {
 
 class _ShoppingScreenState extends State<ShoppingScreen> {
   TextEditingController searchController = TextEditingController();
-  String textController="";
+  String textController = "";
+  PageController _pageController = PageController();
+  int _currentPage = 0;
 
   @override
   void initState() {
     Future.microtask(() => context.read<HomeProvider>()
       ..homeInit()
       ..gethomeData());
+    _pageController = PageController(
+      initialPage: 0,
+    );
+    Timer.periodic(const Duration(seconds: 2), (Timer timer) {
+      return setState(() {
+        if (_currentPage < 2) {
+          _currentPage++;
+        } else {
+          _currentPage = 0;
+        }
+        _pageController.animateToPage(
+          _currentPage,
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeIn,
+        );
+      });
+    });
 
     // TODO: implement initState
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -90,7 +117,6 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                 child: CircularProgressIndicator(),
               );
             }
-            return CircularProgressIndicator();
           }),
         ),
       ),
@@ -104,7 +130,6 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
         margin: const EdgeInsets.fromLTRB(12, 40, 12, 0),
         alignment: Alignment.centerLeft,
         child: Row(children: [
-          const SizedBox(),
           Expanded(
               child: Container(
             width: double.maxFinite,
@@ -130,16 +155,14 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                     child: TextField(
                         controller: searchController,
                         cursorColor: HexColors('#868788'),
-                        onTap: () {
-                          print(searchController.text);
-                        },
+                        onTap: () {},
                         // onChanged: ,
                         textAlign: TextAlign.left,
                         // textInputAction: textInputAction,
                         style: FontStyle.grey14Medium,
                         decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                          contentPadding: const EdgeInsets.only(
+                              top: 10, bottom: 10, right: 10),
                           hintText: "Search",
                           hintStyle: FontStyle.grey14Medium,
                           isDense: true,
@@ -148,7 +171,7 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                   ),
 //scan icon implemented
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Image.asset(
                       "assets/searchscan.png",
                       height: 17,
@@ -166,13 +189,13 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
     return Container(
       width: double.maxFinite,
       height: 104,
-      margin: EdgeInsets.fromLTRB(0.0, 12, 0.0, 0.0),
+      margin: const EdgeInsets.fromLTRB(0.0, 12, 0.0, 0.0),
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, _index) => GestureDetector(
                 onTap: () {},
                 child: Container(
-                  margin: EdgeInsets.only(
+                  margin: const EdgeInsets.only(
                     left: 0.0,
                   ),
                   child: Column(
@@ -223,34 +246,36 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
   }
 
   Widget bannerBuildShoppingScreen(List<Value> banners) {
-    return CarouselSlider.builder(
-      itemCount: banners.length,
-      itemBuilder: (context, index, realIndex) => Stack(
-        children: [
-          InkWell(
-            child: Container(
-              color: Colors.grey[50],
-              child: FadeInImage(
-                image: NetworkImage(banners[index].bannerUrl.toString()),
-                placeholder: const AssetImage(
-                    "assets/Pink-Rose-HD-Wallpaper-1920x1080.jpg"),
-                height: double.maxFinite,
-                width: double.maxFinite,
-                fit: BoxFit.contain,
-              ),
-            ),
-            onTap: () {},
-          ),
-        ],
+    return SizedBox(
+      height: 181,
+      width: 330,
+      child: AnimatedBuilder(
+        animation: _pageController,
+        builder: (context, child) {
+          return Transform.scale(
+              scale: 1,
+              child: PageView.builder(
+                scrollDirection: Axis.horizontal,
+                physics: const ClampingScrollPhysics(),
+                controller: _pageController,
+                itemBuilder: (context, index) {
+                  return CachedNetworkImage(
+                    placeholder: (context, url) => Container(
+                      height: double.maxFinite,
+                      width: double.maxFinite,
+                      decoration: const BoxDecoration(color: Colors.grey),
+                    ),
+                    imageUrl: banners[index].bannerUrl.toString(),
+                    height: double.maxFinite,
+                    width: double.maxFinite,
+                    fit: BoxFit.contain,
+                  );
+                },
+                itemCount: banners.length, // Can be null
+              ));
+        },
+        //
       ),
-      options: CarouselOptions(
-          aspectRatio: 1.80,
-          viewportFraction: 0.85,
-          enlargeCenterPage: false,
-          enableInfiniteScroll: true,
-          initialPage: 1,
-          autoPlay: true,
-          height: 166),
     );
   }
 
@@ -271,10 +296,10 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
       height: 284,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.only(right: 8, left: 8),
+        padding: const EdgeInsets.only(right: 8, left: 8),
         itemCount: products.length,
         itemBuilder: (context, index) => Padding(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             right: 8,
           ),
           child: Container(
@@ -284,7 +309,7 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                 color: HexColors("#EDEDED"),
                 width: 2,
               ),
-              borderRadius: BorderRadius.all(Radius.circular(
+              borderRadius: const BorderRadius.all(Radius.circular(
                       5.0) //                 <--- border radius here
                   ),
             ),
@@ -295,7 +320,7 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 13),
+                      padding: const EdgeInsets.only(top: 13),
                       child: Stack(
                         alignment: Alignment.topLeft,
                         children: <Widget>[
@@ -314,11 +339,6 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                                 overflow: TextOverflow.visible,
                               )
                             ],
-                          ),
-                          const SizedBox(
-                            child: Text(""),
-                            height: 15,
-                            width: 22,
                           ),
                         ],
                       ),
@@ -350,16 +370,16 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      products[index].isExpress == null
-                          ? SizedBox(
-                              height: 15,
-                              width: 22,
-                              child: Image.asset("assets/express.png"),
-                            )
-                          : const SizedBox(
+                      products[index].isExpress == false
+                          ? const SizedBox(
                               child: Text(""),
                               height: 15,
                               width: 22,
+                            )
+                          : SizedBox(
+                              height: 15,
+                              width: 22,
+                              child: Image.asset("assets/express.png"),
                             ),
                       Text("${products[index].actualPrice}",
                           maxLines: 1,
