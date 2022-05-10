@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:task_flutter/common/fontstyle.dart';
 
 import '../Models/ecommercemodels.dart';
+import '../Services/Provider/DbProvider.dart';
 import '../Services/Provider/HomeProvider.dart';
 import '../Services/service_config.dart';
 import '../common/constants.dart';
@@ -94,7 +95,7 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                   }
                 }
               } else {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
               return Column(
                 children: [
@@ -107,9 +108,6 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                   buildProductTile(
                     products!,
                   ),
-
-                  //
-                  // buildBottomBar()
                 ],
               );
             } else {
@@ -246,9 +244,8 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
   }
 
   Widget bannerBuildShoppingScreen(List<Value> banners) {
-    return SizedBox(
+    return Container(margin: EdgeInsets.symmetric(horizontal: 4),
       height: 181,
-      width: 330,
       child: AnimatedBuilder(
         animation: _pageController,
         builder: (context, child) {
@@ -268,7 +265,7 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                     imageUrl: banners[index].bannerUrl.toString(),
                     height: double.maxFinite,
                     width: double.maxFinite,
-                    fit: BoxFit.contain,
+                    fit: BoxFit.fill,
                   );
                 },
                 itemCount: banners.length, // Can be null
@@ -278,7 +275,6 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
       ),
     );
   }
-
   Widget buildProductTile(
     List<Value> products,
   ) {
@@ -405,13 +401,20 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 23),
                     height: 30,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+
+                        Future.microtask(() => context.read<DbProvider>().insertProductToDb(products[index]));
+
+
+
+                      },
                       child: const Text("ADD"),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
                             HexColors("#199B3B")),
                       ),
-                    ))
+                    )),
+
               ],
             ),
           ),
