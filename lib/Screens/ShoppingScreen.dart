@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_flutter/common/fontstyle.dart';
-
+import 'package:task_flutter/common/res/commonwidgets.dart';
 import '../Models/ecommercemodels.dart';
 import '../Services/Provider/DbProvider.dart';
 import '../Services/Provider/HomeProvider.dart';
@@ -244,7 +242,8 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
   }
 
   Widget bannerBuildShoppingScreen(List<Value> banners) {
-    return Container(margin: EdgeInsets.symmetric(horizontal: 4),
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 4),
       height: 181,
       child: AnimatedBuilder(
         animation: _pageController,
@@ -275,6 +274,7 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
       ),
     );
   }
+
   Widget buildProductTile(
     List<Value> products,
   ) {
@@ -403,9 +403,10 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                     child: ElevatedButton(
                       onPressed: () {
 
-                        Future.microtask(() => context.read<DbProvider>().insertProductToDb(products[index]));
-
-
+                        Future.microtask(() => context
+                            .read<DbProvider>()
+                            .insertProductToDb(products[index]));
+                        CommonWidgets.item = products[index].name!;
 
                       },
                       child: const Text("ADD"),
@@ -414,7 +415,6 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                             HexColors("#199B3B")),
                       ),
                     )),
-
               ],
             ),
           ),

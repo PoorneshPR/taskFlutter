@@ -55,6 +55,8 @@ class Value {
     this.offerPrice,
     this.offer,
     this.isExpress,
+    this.countCart
+
   });
 
   int? id;
@@ -66,6 +68,8 @@ class Value {
   String? offerPrice;
   int? offer;
   bool? isExpress;
+  int? countCart;
+
 
   factory Value.fromJson(Map<String, dynamic> json) => Value(
     id: json["id"],
@@ -77,6 +81,8 @@ class Value {
     offerPrice: json["offer_price"] == null ? null : json["offer_price"],
     offer: json["offer"] == null ? null : json["offer"],
     isExpress: json["is_express"] == null ? null : json["is_express"],
+    countCart: json["count_cart"]==null?null:json["count_cart"],
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -89,5 +95,6 @@ class Value {
     "offer_price": offerPrice == null ? null : offerPrice,
     "offer": offer == null ? null : offer,
     "is_express": isExpress == null ? null : isExpress,
+
   };
 }

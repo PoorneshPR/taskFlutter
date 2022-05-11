@@ -18,7 +18,7 @@ class DbConnection {
   static const _tableName = "task_Table";
   static const _productsTable = "products_Table";
   static const _id = "id";
-  static const _productid = "productid";
+  static const _productNameid = "id";
   static const _contact = "contact";
   static const _product = "product";
   static const _databaseVersion = 1;
@@ -47,19 +47,10 @@ class DbConnection {
 
     await db.execute(create);
     const createProductTable = "CREATE TABLE $_productsTable("
-        "$_productid INTEGER PRIMARY KEY,"
+        "$_productNameid TEXT NOT NULL,"
         "$_product TEXT NOT NULL)";
 
     await db.execute(createProductTable);
-  }
-
-  Future<void> insertIntoProductCart(Value? productModel) async {
-    var productValue = productModel?.toJson();
-    String _jsondata = jsonEncode(productValue);
-    Map<String, dynamic> _insertValues = {_product: _jsondata,_productid: productModel?.id};
-    Database? db = await database;
-    await db?.insert(_productsTable, _insertValues,
-        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<void> insertIntoContacts(ContactsModel? contact) async {
@@ -89,13 +80,24 @@ class DbConnection {
     return null;
   }
 
+  Future<void> insertIntoProductCart(Value? productModel) async {
+    var productValue = productModel?.toJson();
+    String _jsondata = jsonEncode(productValue);
+    Map<String, dynamic> _insertValues = {
+      _product: _jsondata,_productNameid:productModel?.id
+    };
+    Database? db = await database;
+    await db?.insert(_productsTable, _insertValues,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
   Future<List<Value>?> getEcommerceProducts() async {
     Database? db = await database;
 
     final List<Map<String, dynamic>>? maps = await db?.query(
       _productsTable,
     );
-    print(maps);
+
     if (maps != null && maps.isNotEmpty) {
       // return ProductValue()
       return List.generate(maps.length,
@@ -103,13 +105,14 @@ class DbConnection {
     }
     return null;
   }
-  Future getAllClients() async {
-    final db = await database;
-    var res = await db?.query(_productsTable);
-   var list =
-    res!.isNotEmpty ? res.map((e) =>  ProductMap.fromMap(e)).toList():[];
-    return  await list;
-  }
+
+  // Future getAllClients() async {
+  //   final db = await database;
+  //   var res = await db?.query(_productsTable);
+  //   var list =
+  //       res!.isNotEmpty ? res.map((e) => ProductMap.fromMap(e)).toList() : [];
+  //   return await list;
+  // }
 
   //delete all function
   deleteAllData() async {
@@ -119,11 +122,9 @@ class DbConnection {
 
   deleteOneItem(int? index) async {
     Database? db = await database;
-    print("Count*******************");
-    print(await db?.rawQuery('SELECT COUNT(*) FROM $_productsTable'));
     return await db?.delete(
       _productsTable,
-      where: "$_productid = ?",
+      where: "$_productNameid = ?",
       whereArgs: [index],
     );
   }

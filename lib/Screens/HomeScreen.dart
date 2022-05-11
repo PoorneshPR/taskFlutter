@@ -1,10 +1,10 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_flutter/Screens/CartScreen.dart';
 import 'package:task_flutter/Screens/GoogleMapsScreen.dart';
 import 'package:task_flutter/Screens/ShoppingScreen.dart';
+import 'package:task_flutter/common/fontstyle.dart';
 import 'package:task_flutter/screens/UserLoginCheck.dart';
 import '../Services/Provider/AuthenticationProvider.dart';
 import '../Services/Provider/DbProvider.dart';
@@ -70,7 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         isLanguage = true;
         Future.microtask(() {
-          
           context.read<LocalProvider>().updateSelectedLanguage('ar');
         });
         // textValue = 'Switch Button is ON';
@@ -122,10 +121,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   label: 'Offers',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.shopping_cart_outlined,
-                    color: HexColors("#7B7B7B"),
-                    size: 25,
+                  icon: Stack(
+                    children: [
+                      Icon(
+                        Icons.shopping_cart_outlined,
+                        color: HexColors("#7B7B7B"),
+                        size: 25,
+                      ),
+                      Positioned(
+                        left: 10,
+                        height: 13,
+                        width: 13,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.red,
+                          ),
+                          child: Consumer<DbProvider>(
+                              builder: (context, value, child) {
+                                return   Container(
+                                  child: Text(
+                                    "${value.cartCount}",
+                                    style: FontStyle.whiteCartAdd10medium,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                );
+                              }
+                                ),
+                        ),
+                      ),
+                    ],
                   ),
                   label: 'Cart',
                 ),
