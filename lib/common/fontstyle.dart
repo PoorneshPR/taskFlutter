@@ -19,4 +19,6 @@ class FontStyle{
       fontSize: 15, fontWeight: FontWeight.bold, color: HexColors("#111111"));
   static TextStyle whiteCartAdd10medium = const TextStyle(
       fontSize: 10, fontWeight: FontWeight.w500, color: Colors.white);
+  static TextStyle whiteSingleCartAdd15medium =  const TextStyle(
+      fontSize: 15, fontWeight: FontWeight.w800, color: Colors.white);
 }

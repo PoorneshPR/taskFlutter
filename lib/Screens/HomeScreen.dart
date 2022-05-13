@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isSearching = false;
   bool fingerPrintTurnOn = false;
   String userName = "";
-  String text = "";
+
 
   Future<String> fetchingUserName() async {
     if (context.read<AuthenticationProvider>().userInfo != null) {
@@ -139,12 +139,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: Consumer<DbProvider>(
                               builder: (context, value, child) {
-                                return   Container(
-                                  child: Text(
-                                    "${value.cartCount}",
-                                    style: FontStyle.whiteCartAdd10medium,
-                                    textAlign: TextAlign.center,
-                                  ),
+                                int cartBadgeCount= value.cartCount;
+                                return   Text(
+                                  "$cartBadgeCount",
+                                  style: FontStyle.whiteCartAdd10medium,
+                                  textAlign: TextAlign.center,
                                 );
                               }
                                 ),

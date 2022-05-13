@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_flutter/DbHelper/DbConnection.dart';
 import 'package:task_flutter/common/fontstyle.dart';
 import 'package:task_flutter/common/res/commonwidgets.dart';
 import '../Models/ecommercemodels.dart';
@@ -289,7 +290,7 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
 
     return SizedBox(
       width: double.maxFinite,
-      height: 284,
+      height: 304,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.only(right: 8, left: 8),
@@ -397,17 +398,66 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                     ],
                   ),
                 ),
+                Expanded(
+                  child: SizedBox(
+                    width: 20,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      // crossAxisAlignment:
+                      // CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(
+                          width: 30,
+                          height: 20,
+                          child: FloatingActionButton(
+                            backgroundColor: Colors.white,
+                            onPressed: () {},
+                            child: const Icon(Icons.remove,
+                                color: Colors.black87, size: 20),
+                          ),
+                        ),
+                        Container(
+                          width: 45,
+                          padding: const EdgeInsets.only(top: 4),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(77),
+                            color: Colors.green,
+                          ),
+                          child: Consumer<DbProvider>(
+                            builder: (context, value, child) => Text(
+                              "",
+                              style: FontStyle.whiteSingleCartAdd15medium,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                          width: 30,
+                          child: FloatingActionButton(
+                            backgroundColor: Colors.white,
+                            onPressed: () {
+                              // Future.microtask(() => context
+                              //   .read<DbProvider>().quantityAddCount());
+                            },
+                            child: const Icon(Icons.add,
+                                color: Colors.black87, size: 20),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
                 Container(
                     padding: const EdgeInsets.symmetric(horizontal: 23),
+                    margin: const EdgeInsets.only(top: 2),
                     height: 30,
                     child: ElevatedButton(
                       onPressed: () {
-
                         Future.microtask(() => context
                             .read<DbProvider>()
-                            .insertProductToDb(products[index]));
+                            .insertProductToDb(products.elementAt(index)));
                         CommonWidgets.item = products[index].name!;
-
                       },
                       child: const Text("ADD"),
                       style: ButtonStyle(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:task_flutter/DbHelper/DbConnection.dart';
+import 'package:task_flutter/Models/ProductMapModels.dart';
 import 'package:task_flutter/Models/ecommercemodels.dart';
 import 'package:task_flutter/Services/ContactsService.dart';
 import 'package:task_flutter/Models/ContactsModel.dart';
@@ -12,9 +13,10 @@ class DbProvider with ChangeNotifier {
   // ContactsList? _lists;
   List<ContactsModel>? contactUser;
   List<ContactsModel>? initialData;
-  List<Value>? productDetails;
+  List<ProductMapModels>? productDetails;
   List<Value>? initialProductDetails;
-  int cartCount=0;
+  int cartCount = 0;
+
 
   Future<String?> _loadApiData() async {
     return await ContactsService().getApiData();
@@ -36,41 +38,33 @@ class DbProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> insertProductToDb( Value? element) async {
-
-
+  Future<void> insertProductToDb(Value? element) async {
     await _db.insertIntoProductCart(element);
 
     await loadProductsFromDb();
     notifyListeners();
   }
 
-
   Future<void> deleteAllProductFromDb() async {
     await _db.deleteAllData();
-    await loadProductsFromDb();
+     loadProductsFromDb();
     notifyListeners();
   }
 
-  Future<void> deleteOneProductFromDb(int? id) async {
+  Future<void> deleteOneProductFromDb(int id) async {
     await _db.deleteOneItem(id);
-    print(id);
-
-    loadProductsFromDb();
+        loadProductsFromDb();
 
     notifyListeners();
   }
-
-  Future<void> loadProductsFromDb() async {
+   Future<void> loadProductsFromDb() async {
     productDetails = await _db.getEcommerceProducts();
-    print(productDetails);
-    if(productDetails?.length==null){
-      cartCount=0;
-    }
-    else{
-      cartCount =productDetails!.length;
-      print(cartCount);
-    }
+         if (productDetails?.length == null) {
+      cartCount = 0;
+    } else {
+      cartCount = productDetails!.length;
+      }
+
 
     notifyListeners();
   }
@@ -87,4 +81,5 @@ class DbProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
 }
