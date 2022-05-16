@@ -437,8 +437,10 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                           child: FloatingActionButton(
                             backgroundColor: Colors.white,
                             onPressed: () {
-                              // Future.microtask(() => context
-                              //   .read<DbProvider>().quantityAddCount());
+                              Future.microtask(() => context
+                                  .read<DbProvider>()
+                                  .insertProductToDb(products.elementAt(index)));
+                              CommonWidgets.item = products[index].name!;
                             },
                             child: const Icon(Icons.add,
                                 color: Colors.black87, size: 20),
